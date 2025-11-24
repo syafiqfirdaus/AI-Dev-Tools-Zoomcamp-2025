@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Add New Task</h2>
+    <form method="post" action="{% url 'todo_create' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required placeholder="What needs to be done?">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3" placeholder="Add some details..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="due_date">Due Date</label>
+            <input type="date" id="due_date" name="due_date">
+        </div>
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Your Tasks</h2>
+    {% if todos %}
+    <ul class="todo-list">
+        {% for todo in todos %}
+        <li class="todo-item {% if todo.is_resolved %}completed{% endif %}">
+            <div class="todo-content">
+                <div class="todo-title">{{ todo.title }}</div>
+                <div class="todo-meta">
+                    {% if todo.due_date %}Due: {{ todo.due_date }}{% endif %}
+                    {% if todo.description %}<br>{{ todo.description }}{% endif %}
+                </div>
+            </div>
+            <div class="todo-actions">
+                <a href="{% url 'todo_toggle_status' todo.pk %}"
+                    class="btn-sm {% if todo.is_resolved %}btn-success{% else %}btn-sm{% endif %}"
+                    style="background-color: {% if todo.is_resolved %}#10b981{% else %}#9ca3af{% endif %}; color: white; padding: 0.5rem; border-radius: 0.25rem;">
+                    {% if todo.is_resolved %}✓{% else %}○{% endif %}
+                </a>
+                <a href="{% url 'todo_update' todo.pk %}" class="btn-sm"
+                    style="background-color: #3b82f6; color: white; padding: 0.5rem; border-radius: 0.25rem;">Edit</a>
+                <a href="{% url 'todo_delete' todo.pk %}" class="btn-sm btn-danger"
+                    style="color: white; padding: 0.5rem; border-radius: 0.25rem;"
+                    onclick="return confirm('Are you sure?')">Delete</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p style="text-align: center; color: var(--text-secondary);">No tasks yet. Add one above!</p>
+    {% endif %}
+</div>
+{% endblock %}
