@@ -2,6 +2,8 @@
 
 A real-time collaborative coding interview platform built with React, Express, and Socket.io.
 
+**Status:** ✅ Done
+
 ## Features
 
 - Real-time code collaboration

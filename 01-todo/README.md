@@ -2,6 +2,8 @@
 
 A simple, modern TODO application built with Django and Vanilla CSS.
 
+**Status:** ✅ Done
+
 ## Features
 
 - **Manage Tasks**: Create, read, update, and delete (CRUD) tasks.
