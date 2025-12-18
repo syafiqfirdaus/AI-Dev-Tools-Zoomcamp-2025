@@ -1,0 +1,16 @@
+Manual test requests for the stdio server (paste these one by one):
+
+1. Initialize the client:
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test-client","version":"1.0.0"}}}
+
+2. Initialize notification:
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+
+3. List the tools:
+{"jsonrpc":"2.0","id":2,"method":"tools/list"}
+
+4. Call the weather tool:
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"get_weather","arguments":{"city":"London"}}}
+
+5. Call the echo tool:
+{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"echo","arguments":{"message":"Hello from manual test!"}}}

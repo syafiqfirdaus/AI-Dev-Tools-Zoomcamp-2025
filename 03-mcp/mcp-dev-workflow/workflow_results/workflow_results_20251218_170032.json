@@ -1,0 +1,253 @@
+{
+  "documentation_workflow": {
+    "scenario": "FastAPI Development with Live Documentation",
+    "timestamp": "2025-12-18T17:00:32.599482",
+    "steps": [],
+    "tools_used": [],
+    "documentation_accessed": [],
+    "code_examples": [],
+    "multi_server_coordination": {
+      "servers_tested": [
+        {
+          "name": "stdio",
+          "tools_count": 2,
+          "available_tools": [
+            "echo",
+            "get_weather"
+          ],
+          "status": "active",
+          "echo_test": {
+            "success": true,
+            "response_preview": "Echo: Hello from stdio server"
+          }
+        },
+        {
+          "name": "http",
+          "tools_count": 2,
+          "available_tools": [
+            "echo",
+            "get_weather"
+          ],
+          "status": "active",
+          "echo_test": {
+            "success": true,
+            "response_preview": "Echo: Hello from http server"
+          }
+        }
+      ],
+      "request_routing": [
+        {
+          "server": "stdio",
+          "tool": "echo",
+          "success": true
+        },
+        {
+          "server": "http",
+          "tool": "echo",
+          "success": true
+        }
+      ],
+      "aggregated_results": {
+        "weather_data": {
+          "London_stdio": {
+            "city": "London",
+            "server": "stdio",
+            "success": true,
+            "data_preview": "Weather for London:\nTemperature: 15.2\u00b0C\nHumidity: 68%\nConditions: Partly cloudy\nWind Speed: 12.5 km/"
+          },
+          "New York_stdio": {
+            "city": "New York",
+            "server": "stdio",
+            "success": true,
+            "data_preview": "Weather for New York:\nTemperature: 22.1\u00b0C\nHumidity: 55%\nConditions: Sunny\nWind Speed: 8.3 km/h\nPress"
+          },
+          "Tokyo_stdio": {
+            "city": "Tokyo",
+            "server": "stdio",
+            "success": true,
+            "data_preview": "Weather for Tokyo:\nTemperature: 18.7\u00b0C\nHumidity: 72%\nConditions: Light rain\nWind Speed: 6.2 km/h\nPre"
+          }
+        }
+      },
+      "failover_scenarios": [],
+      "load_balancing": [
+        {
+          "request_id": 1,
+          "server": "stdio",
+          "success": true,
+          "response_time_simulation": "50ms"
+        },
+        {
+          "request_id": 2,
+          "server": "http",
+          "success": true,
+          "response_time_simulation": "60ms"
+        },
+        {
+          "request_id": 3,
+          "server": "stdio",
+          "success": true,
+          "response_time_simulation": "70ms"
+        },
+        {
+          "request_id": 4,
+          "server": "http",
+          "success": true,
+          "response_time_simulation": "80ms"
+        },
+        {
+          "request_id": 5,
+          "server": "stdio",
+          "success": true,
+          "response_time_simulation": "90ms"
+        }
+      ]
+    },
+    "summary": {
+      "total_steps": 0,
+      "successful_steps": 0,
+      "tools_used_count": 0,
+      "documentation_sources": 0,
+      "code_examples_retrieved": 0
+    }
+  },
+  "multi_server_coordination": {
+    "servers_tested": [
+      {
+        "name": "stdio",
+        "tools_count": 2,
+        "available_tools": [
+          "echo",
+          "get_weather"
+        ],
+        "status": "active",
+        "echo_test": {
+          "success": true,
+          "response_preview": "Echo: Hello from stdio server"
+        }
+      },
+      {
+        "name": "http",
+        "tools_count": 2,
+        "available_tools": [
+          "echo",
+          "get_weather"
+        ],
+        "status": "active",
+        "echo_test": {
+          "success": true,
+          "response_preview": "Echo: Hello from http server"
+        }
+      }
+    ],
+    "request_routing": [
+      {
+        "server": "stdio",
+        "tool": "echo",
+        "success": true
+      },
+      {
+        "server": "http",
+        "tool": "echo",
+        "success": true
+      }
+    ],
+    "aggregated_results": {
+      "weather_data": {
+        "London_stdio": {
+          "city": "London",
+          "server": "stdio",
+          "success": true,
+          "data_preview": "Weather for London:\nTemperature: 15.2\u00b0C\nHumidity: 68%\nConditions: Partly cloudy\nWind Speed: 12.5 km/"
+        },
+        "New York_stdio": {
+          "city": "New York",
+          "server": "stdio",
+          "success": true,
+          "data_preview": "Weather for New York:\nTemperature: 22.1\u00b0C\nHumidity: 55%\nConditions: Sunny\nWind Speed: 8.3 km/h\nPress"
+        },
+        "Tokyo_stdio": {
+          "city": "Tokyo",
+          "server": "stdio",
+          "success": true,
+          "data_preview": "Weather for Tokyo:\nTemperature: 18.7\u00b0C\nHumidity: 72%\nConditions: Light rain\nWind Speed: 6.2 km/h\nPre"
+        }
+      }
+    },
+    "failover_scenarios": [],
+    "load_balancing": [
+      {
+        "request_id": 1,
+        "server": "stdio",
+        "success": true,
+        "response_time_simulation": "50ms"
+      },
+      {
+        "request_id": 2,
+        "server": "http",
+        "success": true,
+        "response_time_simulation": "60ms"
+      },
+      {
+        "request_id": 3,
+        "server": "stdio",
+        "success": true,
+        "response_time_simulation": "70ms"
+      },
+      {
+        "request_id": 4,
+        "server": "http",
+        "success": true,
+        "response_time_simulation": "80ms"
+      },
+      {
+        "request_id": 5,
+        "server": "stdio",
+        "success": true,
+        "response_time_simulation": "90ms"
+      }
+    ]
+  },
+  "error_handling": {
+    "error_scenarios": [
+      {
+        "scenario": "invalid_parameters",
+        "tool": "get_weather",
+        "error_handled": true,
+        "error_message": "Invalid input: Missing required argument: city"
+      },
+      {
+        "scenario": "nonexistent_tool",
+        "tool": "nonexistent_tool",
+        "exception": "Tool 'nonexistent_tool' not found",
+        "recovery": "exception_caught"
+      }
+    ],
+    "recovery_strategies": [],
+    "retry_attempts": [
+      {
+        "attempt": 1,
+        "success": false,
+        "error": "Simulated failure on attempt 1"
+      },
+      {
+        "attempt": 2,
+        "success": false,
+        "error": "Simulated failure on attempt 2"
+      },
+      {
+        "attempt": 3,
+        "success": true,
+        "message": "Operation succeeded"
+      }
+    ],
+    "fallback_actions": [
+      {
+        "strategy": "fallback",
+        "action": "echo_help_message",
+        "success": true,
+        "message": "Provided alternative help message"
+      }
+    ]
+  }
+}
