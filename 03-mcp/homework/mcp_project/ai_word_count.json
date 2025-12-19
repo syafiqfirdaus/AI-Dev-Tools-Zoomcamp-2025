@@ -1,0 +1,66 @@
+{
+  "top_words": [
+    {
+      "word": "the",
+      "count": 1235
+    },
+    {
+      "word": "and",
+      "count": 737
+    },
+    {
+      "word": "of",
+      "count": 688
+    },
+    {
+      "word": "ai",
+      "count": 525
+    },
+    {
+      "word": "to",
+      "count": 501
+    },
+    {
+      "word": "in",
+      "count": 467
+    },
+    {
+      "word": "a",
+      "count": 449
+    },
+    {
+      "word": "on",
+      "count": 354
+    },
+    {
+      "word": "from",
+      "count": 316
+    },
+    {
+      "word": "intelligence",
+      "count": 261
+    },
+    {
+      "word": "2024",
+      "count": 261
+    },
+    {
+      "word": "that",
+      "count": 244
+    },
+    {
+      "word": "retrieved",
+      "count": 232
+    },
+    {
+      "word": "is",
+      "count": 226
+    },
+    {
+      "word": "artificial",
+      "count": 225
+    }
+  ],
+  "total_unique_words": 7053,
+  "total_words": 34075
+}
