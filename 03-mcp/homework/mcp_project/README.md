@@ -1,25 +1,21 @@
-# MCP Project: Web Scraper and Word Counter
+# MCP Project
 
-This project demonstrates a web scraper that fetches a webpage, extracts text content, and analyzes word frequencies with advanced features.
+This is the MCP project for the AI Dev Tools Zoomcamp 2025.
 
-## Features
+## Project Structure
 
-- Fetches content from any specified URL
-- Extracts and cleans text from HTML
-- Counts word frequencies with stop word filtering
-- Displays customizable number of top words
-- Saves results to JSON file
-- Command-line interface with various options
+- `main.py`: Main script file
+- `requirements.txt`: Project dependencies
+- `.gitignore`: Git ignore file
 
-## Installation
+## Setup
 
-1. Clone this repository
-2. Create and activate a virtual environment:
+1. Create and activate a virtual environment:
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-3. Install the required dependencies:
+2. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
    ```
