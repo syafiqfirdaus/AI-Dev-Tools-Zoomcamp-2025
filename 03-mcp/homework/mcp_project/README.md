@@ -1,42 +1,70 @@
-# MCP Project
+# AI Dev Tools Zoomcamp 2025 - MCP Project
 
-This is the MCP project for the AI Dev Tools Zoomcamp 2025.
+## Homework Questions
+
+### Question 1: Create a New Project
+
+1. Install `uv` for dependency management:
+   ```bash
+   pip install uv
+   ```
+
+2. Create a new directory and initialize the project:
+   ```bash
+   mkdir mcp_project
+   cd mcp_project
+   uv init
+   ```
+
+3. Install fastmcp:
+   ```bash
+   uv add fastmcp
+   ```
+
+4. The first hash in the `wheels` section of `fastmcp` in `uv.lock` is:
+   
+   (Note: The actual hash will be visible after running the above commands and checking the `uv.lock` file)
+
+### Question 2: FastMCP Transport
+
+1. Create a `main.py` file with the following content:
+   ```python
+   from fastmcp import FastMCP
+
+   mcp = FastMCP("Demo 🚀")
+
+   @mcp.tool
+   def add(a: int, b: int) -> int:
+       """Add two numbers together."""
+       return a + b
+
+   if __name__ == "__main__":
+       mcp.run()
+   ```
+
+2. Run the server:
+   ```bash
+   python main.py
+   ```
+
+3. The server will be available at `http://localhost:8000`
 
 ## Project Structure
 
-- `main.py`: Main script file
-- `requirements.txt`: Project dependencies
-- `.gitignore`: Git ignore file
-
-## Setup
-
-1. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-### Basic Usage
-```bash
-python main.py
 ```
-This will analyze the default webpage (Python Wikipedia page) and show the top 10 most common words.
-
-### Advanced Usage
-```bash
-python main.py [URL] [options]
+mcp_project/
+├── main.py            # Main FastMCP application
+├── requirements.txt   # Project dependencies
+├── .gitignore        # Git ignore rules
+└── README.md         # This file
 ```
 
-### Options:
-- `URL`: Webpage URL to analyze (default: Python Wikipedia page)
-- `-n, --top-n N`: Show top N words (default: 10)
-- `-o, --output FILE`: Save results to a JSON file
+## Next Steps
+
+1. Select a GitHub repository with documentation
+2. Download the repository data
+3. Implement search functionality
+4. Test the MCP server with the documentation
 - `--no-stop-words`: Exclude common English stop words
 
 ### Examples:
