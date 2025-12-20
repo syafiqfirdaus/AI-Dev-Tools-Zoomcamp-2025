@@ -46,8 +46,7 @@ ENV/
 Thumbs.db
 
 # Lock files
-uv.lock
-*.lock
+# Note: uv.lock is needed for homework submission
 
 # Local configuration
 .env.local

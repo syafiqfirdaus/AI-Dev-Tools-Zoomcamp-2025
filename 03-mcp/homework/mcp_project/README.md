@@ -1,112 +1,204 @@
-# AI Dev Tools Zoomcamp 2025 - MCP Project
+# AI Dev Tools Zoomcamp 2025 - MCP Homework
 
-## Homework Questions
+This project implements a FastMCP server with documentation search capabilities, completing the homework requirements for Module 3.
+
+## Project Overview
+
+This MCP server provides:
+
+- Web scraping using Jina Reader
+- Word counting on web pages
+- FastMCP documentation search using minsearch
+
+## Homework Answers
 
 ### Question 1: Create a New Project
 
-1. Install `uv` for dependency management:
-   ```bash
-   pip install uv
-   ```
+**Setup:**
 
-2. Create a new directory and initialize the project:
-   ```bash
-   mkdir mcp_project
-   cd mcp_project
-   uv init
-   ```
+```bash
+pip install uv
+uv init
+uv add fastmcp minsearch requests
+```
 
-3. Install fastmcp:
-   ```bash
-   uv add fastmcp
-   ```
+**Answer:** The first hash in the `wheels` section of `fastmcp` in `uv.lock` is:
 
-4. The first hash in the `wheels` section of `fastmcp` in `uv.lock` is:
-   
-   (Note: The actual hash will be visible after running the above commands and checking the `uv.lock` file)
+```
+sha256:fb3e365cc1d52573ab89caeba9944dd4b056149097be169bce428e011f0a57e5
+```
 
 ### Question 2: FastMCP Transport
 
-1. Create a `main.py` file with the following content:
-   ```python
-   from fastmcp import FastMCP
+**Answer:** STDIO
 
-   mcp = FastMCP("Demo 🚀")
+The server uses STDIO (Standard Input/Output) as the transport mechanism for MCP communication.
 
-   @mcp.tool
-   def add(a: int, b: int) -> int:
-       """Add two numbers together."""
-       return a + b
+### Question 3: Scrape Web Tool
 
-   if __name__ == "__main__":
-       mcp.run()
-   ```
+**Implementation:** See `web_scraper.py` for the standalone implementation, or `main.py` for the integrated version.
 
-2. Run the server:
-   ```bash
-   python main.py
-   ```
+The `scrape_webpage()` function uses Jina Reader by prepending `https://r.jina.ai/` to any URL.
 
-3. The server will be available at `http://localhost:8000`
+**Answer:** Approximately **19184** characters (may vary slightly depending on when the page was scraped)
+
+### Question 4: Integrate the Tool
+
+The `count_word_occurrences()` tool is implemented as an MCP tool in `main.py`.
+
+**Running the server:**
+
+```bash
+uv --directory /full/path/to/mcp_project run python main.py
+```
+
+**Answer:** The word "data" appears approximately **111** times on <https://datatalks.club/> (may vary as the website content changes)
+
+### Question 5: Implement Search
+
+**Implementation:** See `search.py`
+
+The search implementation:
+
+- Downloads the FastMCP repository from GitHub
+- Extracts and indexes all `.md` and `.mdx` files
+- Removes the "fastmcp-main/" prefix from paths
+- Uses `minsearch` for document indexing and search
+- Returns the top 5 most relevant documents
+
+**Answer:** `examples/testing_demo/README.md`
+
+**Testing the search:**
+
+```bash
+uv run python search.py
+```
+
+### Question 6: Search Tool (Ungraded)
+
+The search functionality is integrated as an MCP tool in `main.py` via the `search_fastmcp_docs()` function.
+
+**Features:**
+
+- Lazy loading of the search index (loads on first use)
+- Configurable number of results (1-10)
+- Returns formatted results with file names, previews, and full content
 
 ## Project Structure
 
 ```
 mcp_project/
-├── main.py            # Main FastMCP application
-├── requirements.txt   # Project dependencies
-├── .gitignore        # Git ignore rules
-└── README.md         # This file
+├── main.py              # Main FastMCP server with all tools
+├── search.py            # Standalone search implementation
+├── web_scraper.py       # Standalone web scraper
+├── test_word_count.py   # Test file for word counting
+├── pyproject.toml       # Project dependencies
+├── uv.lock             # Dependency lock file (for Question 1)
+├── requirements.txt     # Alternative dependency list
+├── .gitignore          # Git ignore rules
+└── README.md           # This file
 ```
 
-## Next Steps
+## Installation
 
-1. Select a GitHub repository with documentation
-2. Download the repository data
-3. Implement search functionality
-4. Test the MCP server with the documentation
-- `--no-stop-words`: Exclude common English stop words
+1. Install `uv`:
 
-### Examples:
-1. Analyze a specific URL:
    ```bash
-   python main.py https://en.wikipedia.org/wiki/Artificial_intelligence
+   pip install uv
    ```
 
-2. Show top 20 words and save to file:
+2. Install dependencies:
+
    ```bash
-   python main.py -n 20 -o results.json
+   cd mcp_project
+   uv add fastmcp minsearch requests
    ```
 
-3. Exclude common stop words:
-   ```bash
-   python main.py --no-stop-words
-   ```
+## Usage
 
-## Output
+### Running the MCP Server
 
-The script displays:
-- Top N most common words
-- Total number of unique words
-- Total word count
+Start the FastMCP server:
 
-When using the `-o/--output` option, results are saved in JSON format with the following structure:
-```json
-{
-  "top_words": [
-    {"word": "example", "count": 123}
-  ],
-  "total_unique_words": 1000,
-  "total_words": 5000
-}
+```bash
+uv run python main.py
 ```
 
-## Dependencies
+### Running Standalone Scripts
 
-- Python 3.6+
-- requests
-- beautifulsoup4
+**Test web scraping:**
+
+```bash
+uv run python web_scraper.py
+```
+
+**Test word counting:**
+
+```bash
+uv run python test_word_count.py
+```
+
+**Test documentation search:**
+
+```bash
+uv run python search.py
+```
+
+## MCP Tools Available
+
+1. **add** - Add two numbers (demo tool)
+   - Parameters: `a: int, b: int`
+   - Returns: `int`
+
+2. **count_word_occurrences** - Count word occurrences on a webpage
+   - Parameters: `url: str, word: str`
+   - Returns: `Dict` with count and metadata
+
+3. **search_fastmcp_docs** - Search FastMCP documentation
+   - Parameters: `query: str, num_results: int = 5`
+   - Returns: `List[Dict]` with search results
+
+## Integration with AI Assistants
+
+To use this MCP server with your AI assistant:
+
+1. Add to your MCP configuration (e.g., for Claude Desktop or VSCode):
+
+   ```json
+   {
+     "mcpServers": {
+       "fastmcp-docs": {
+         "command": "uv",
+         "args": [
+           "--directory",
+           "/full/path/to/mcp_project",
+           "run",
+           "python",
+           "main.py"
+         ]
+       }
+     }
+   }
+   ```
+
+2. Restart your AI assistant
+
+3. The MCP tools will be available for use
+
+## Technologies Used
+
+- **FastMCP**: Framework for building MCP servers
+- **minsearch**: Lightweight text search engine with TF-IDF
+- **Jina Reader**: Web content extraction service
+- **uv**: Fast Python package manager
+
+## Notes
+
+- The search index is lazy-loaded on first use to improve startup time
+- Downloaded documentation is cached in `.cache/` directory
+- All paths are normalized to use forward slashes
+- The "fastmcp-main/" prefix is automatically removed from file paths
 
 ## License
 
-This project is licensed under the MIT License.
+This project is part of the AI Dev Tools Zoomcamp 2025 homework.
