@@ -101,7 +101,7 @@ Features that finance students & investors will love:
 🔒 Input validation
 🎯 Accurate formulas
 
-Try it yourself! (Link TBD)
+Try it yourself! <https://finance-frontend-ywzs.onrender.com>
 
 **Tweet 5/5** (Learnings & Thanks)
 
