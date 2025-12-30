@@ -67,13 +67,14 @@ graph TB
     B -->|REST API| E
     G --> I
     G --> J
-</mermaid>
+```
 
 ---
 
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **React 18** - UI framework
 - **Vite** - Build tool and dev server
 - **TypeScript** - Type safety
@@ -82,6 +83,7 @@ graph TB
 - **Vitest + React Testing Library** - Testing
 
 ### Backend
+
 - **FastAPI** - Modern Python web framework
 - **SQLAlchemy** - ORM for database interactions
 - **Pydantic** - Data validation
@@ -91,6 +93,7 @@ graph TB
 - **Pytest** - Testing framework
 
 ### DevOps
+
 - **Docker + Docker Compose** - Containerization
 - **GitHub Actions** - CI/CD pipeline
 - **Render** - Cloud deployment platform
@@ -107,6 +110,7 @@ graph TB
 ![Deployment](https://img.shields.io/badge/Deployment-Live-success)
 
 ## 🌐 Live Demo
+
 - **Frontend (App):** [https://finance-frontend-ywzs.onrender.com](https://finance-frontend-ywzs.onrender.com)
 - **Backend (API):** [https://finance-backend-fsah.onrender.com/docs](https://finance-backend-fsah.onrender.com/docs)
 
