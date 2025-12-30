@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import apiClient from '../api/client';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const InvestmentReturnCalculator: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -129,7 +129,7 @@ const InvestmentReturnCalculator: React.FC = () => {
                                 <YAxis />
                                 <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
                                 <Bar dataKey="value" name="Amount">
-                                    {getChartData().map((entry, index) => (
+                                    {getChartData().map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={['#8884d8', '#82ca9d', '#ffc658'][index % 3]} />
                                     ))}
                                 </Bar>
