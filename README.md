@@ -103,8 +103,12 @@ graph TB
 - **Python 3.12+**
 - **Node.js 18+**
 - **UV** - Python package manager ([Installation guide](https://github.com/astral-sh/uv))
-![Status](https://img.shields.io/badge/Status-Development-yellow)
-![Deployment](https://img.shields.io/badge/Deployment-Pending-lightgrey)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+![Deployment](https://img.shields.io/badge/Deployment-Live-success)
+
+## 🌐 Live Demo
+- **Frontend (App):** [https://finance-frontend-ywzs.onrender.com](https://finance-frontend-ywzs.onrender.com)
+- **Backend (API):** [https://finance-backend-fsah.onrender.com/docs](https://finance-backend-fsah.onrender.com/docs)
 
 ---
 
