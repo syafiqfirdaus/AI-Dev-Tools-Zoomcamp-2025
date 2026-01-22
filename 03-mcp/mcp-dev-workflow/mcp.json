@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "mcp-dev-workflow-stdio": {
+      "command": "python",
+      "args": ["-m", "mcp_server.stdio_server"],
+      "cwd": ".",
+      "env": {
+        "PYTHONPATH": ".",
+        "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "echo",
+        "get_weather"
+      ]
+    },
+    "mcp-dev-workflow-http": {
+      "command": "python",
+      "args": ["-m", "mcp_server.http_server", "--port", "8001"],
+      "cwd": ".",
+      "env": {
+        "PYTHONPATH": ".",
+        "CONTEXT7_API_KEY": "${env:CONTEXT7_API_KEY}"
+      },
+      "disabled": true,
+      "autoApprove": []
+    }
+  }
+}

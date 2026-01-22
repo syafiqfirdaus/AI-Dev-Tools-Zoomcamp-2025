@@ -1,0 +1,20 @@
+# Ignore FUSE hidden files
+.fuse_hidden*
+
+# Python cache and virtual environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Local development files
+*.log
+.env
+
+# Output files from the script
+*.json
+!ai_word_count.json  # Keep the example output file
