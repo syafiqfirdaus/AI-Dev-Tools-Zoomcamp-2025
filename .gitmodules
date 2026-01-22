@@ -1,0 +1,3 @@
+[submodule "Project/quantitative-finance-calculator"]
+	path = Project/quantitative-finance-calculator
+	url = https://github.com/syafiqfirdaus/quantitative-finance-calculator.git
