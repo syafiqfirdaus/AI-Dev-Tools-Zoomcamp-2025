@@ -22,24 +22,45 @@
 
 **Status:** ✅ **Completed & Deployed**
 
-### Project Details
+### Quantitative Finance Calculator
 
-- **Name:** Capstone 2 - Portfolio Project
-- **Description:** Full-stack application demonstrating AI-assisted development
-- **Location:** `Project/` directory
-- **Deployment:** Successfully deployed to cloud (Render)
-- **Documentation:** Complete setup, testing, and deployment guides included
+A comprehensive web application for fundamental quantitative finance calculations, designed for finance students, retail investors, and anyone learning quantitative finance concepts.
 
-### Key Features
+**Live Demo:**
 
-- AI-powered development using MCP tools
-- Full-stack implementation with modern tech stack
-- Complete testing suite (unit + integration)
-- Docker containerization
-- CI/CD pipeline
-- Cloud deployment with live demo
+- Frontend: <https://finance-frontend-ywzs.onrender.com>
+- Backend API: <https://finance-backend-fsah.onrender.com/docs>
 
-📁 See [`Project/README.md`](./Project/README.md) for detailed documentation
+### Features
+
+- 🧮 **Four Comprehensive Calculators**
+  - Compound Interest Calculator
+  - Loan Amortization
+  - Investment Return Calculator (ROI & CAGR)
+  - Risk Metrics (Portfolio volatility & Sharpe ratio)
+- 📈 **Visual Results** - Interactive charts using Recharts
+- 💾 **Calculation History** - Persist and review past calculations
+- 🎨 **Modern UI** - Clean, responsive design with full TypeScript
+- ✅ **Input Validation** - Comprehensive error checking with Pydantic
+
+### Tech Stack
+
+- **Frontend:** React 18, Vite, TypeScript, Recharts, Vitest
+- **Backend:** FastAPI, SQLAlchemy, Pydantic, UV package manager
+- **Database:** PostgreSQL (production), SQLite (development)
+- **DevOps:** Docker + Docker Compose, GitHub Actions, Render
+- **Testing:** 95%+ backend coverage, 90%+ frontend coverage
+
+### AI-Assisted Development
+
+Built with Google Antigravity using Claude Sonnet 4.5 (Thinking) model:
+
+- Complete AI development workflow documentation
+- MCP (Model Context Protocol) integration
+- Detailed prompting strategies
+- AI-assisted planning, implementation, testing, and deployment
+
+📁 See [`Project/quantitative-finance-calculator/`](./Project/quantitative-finance-calculator/) for complete documentation
 
 ---
 
