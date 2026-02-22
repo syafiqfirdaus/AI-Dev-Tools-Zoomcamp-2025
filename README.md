@@ -148,6 +148,12 @@ This course demonstrated:
 ✅ API design and documentation  
 ✅ Peer code review and evaluation
 
+## 📜 Certificate
+
+**Status:** ✅ **Received**
+
+- [Syafiq Firdaus - Certs.pdf](./Certificate/Syafiq%20Firdaus%20-%20Certs.pdf)
+
 ---
 
 ## 📜 License
@@ -157,4 +163,4 @@ Student work by Syafiq Firdaus
 
 ---
 
-**Last Updated:** January 2026
+**Last Updated:** February 2026
