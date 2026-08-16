@@ -1,0 +1,443 @@
+openapi: 3.0.3
+info:
+  title: Quantitative Finance Calculator API
+  description: RESTful API for fundamental quantitative finance calculations
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.quantfinance.example.com
+    description: Production server
+
+tags:
+  - name: calculations
+    description: Financial calculation endpoints
+  - name: history
+    description: Calculation history management
+
+paths:
+  /api/v1/calculate/compound-interest:
+    post:
+      tags:
+        - calculations
+      summary: Calculate compound interest
+      description: Calculates the future value of an investment with compound interest
+      operationId: calculateCompoundInterest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompoundInterestRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompoundInterestResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/calculate/loan-amortization:
+    post:
+      tags:
+        - calculations
+      summary: Calculate loan amortization schedule
+      description: Generates a complete payment schedule for a loan
+      operationId: calculateLoanAmortization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanAmortizationRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanAmortizationResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/calculate/investment-return:
+    post:
+      tags:
+        - calculations
+      summary: Calculate investment returns
+      description: Calculates ROI and CAGR for an investment
+      operationId: calculateInvestmentReturn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvestmentReturnRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestmentReturnResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/calculate/risk-metrics:
+    post:
+      tags:
+        - calculations
+      summary: Calculate portfolio risk metrics
+      description: Calculates volatility and Sharpe ratio for a portfolio
+      operationId: calculateRiskMetrics
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RiskMetricsRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiskMetricsResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/history:
+    get:
+      tags:
+        - history
+      summary: Get calculation history
+      description: Retrieves the history of all calculations
+      operationId: getCalculationHistory
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of records to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of records to skip
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: calculation_type
+          in: query
+          description: Filter by calculation type
+          required: false
+          schema:
+            type: string
+            enum: [compound_interest, loan_amortization, investment_return, risk_metrics]
+      responses:
+        '200':
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CompoundInterestRequest:
+      type: object
+      required:
+        - principal
+        - rate
+        - time
+        - compounds_per_year
+      properties:
+        principal:
+          type: number
+          format: float
+          minimum: 0
+          description: Initial investment amount
+          example: 10000
+        rate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Annual interest rate (as decimal, e.g., 0.05 for 5%)
+          example: 0.05
+        time:
+          type: number
+          format: float
+          minimum: 0
+          description: Investment period in years
+          example: 10
+        compounds_per_year:
+          type: integer
+          minimum: 1
+          description: Number of times interest is compounded per year
+          example: 12
+
+    CompoundInterestResponse:
+      type: object
+      properties:
+        future_value:
+          type: number
+          format: float
+          description: The future value of the investment
+          example: 16470.09
+        total_interest:
+          type: number
+          format: float
+          description: Total interest earned
+          example: 6470.09
+        calculation_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this calculation
+
+    LoanAmortizationRequest:
+      type: object
+      required:
+        - principal
+        - annual_rate
+        - term_years
+      properties:
+        principal:
+          type: number
+          format: float
+          minimum: 0
+          description: Loan amount
+          example: 300000
+        annual_rate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Annual interest rate (as decimal)
+          example: 0.045
+        term_years:
+          type: integer
+          minimum: 1
+          description: Loan term in years
+          example: 30
+
+    LoanAmortizationResponse:
+      type: object
+      properties:
+        monthly_payment:
+          type: number
+          format: float
+          description: Fixed monthly payment amount
+          example: 1520.06
+        total_payment:
+          type: number
+          format: float
+          description: Total amount paid over the loan term
+          example: 547221.60
+        total_interest:
+          type: number
+          format: float
+          description: Total interest paid
+          example: 247221.60
+        amortization_schedule:
+          type: array
+          description: Payment schedule details
+          items:
+            $ref: '#/components/schemas/PaymentPeriod'
+        calculation_id:
+          type: string
+          format: uuid
+
+    PaymentPeriod:
+      type: object
+      properties:
+        period:
+          type: integer
+          description: Payment period number
+        payment:
+          type: number
+          format: float
+          description: Payment amount for this period
+        principal:
+          type: number
+          format: float
+          description: Principal portion of payment
+        interest:
+          type: number
+          format: float
+          description: Interest portion of payment
+        balance:
+          type: number
+          format: float
+          description: Remaining balance after payment
+
+    InvestmentReturnRequest:
+      type: object
+      required:
+        - initial_value
+        - final_value
+        - years
+      properties:
+        initial_value:
+          type: number
+          format: float
+          minimum: 0
+          description: Initial investment value
+          example: 10000
+        final_value:
+          type: number
+          format: float
+          minimum: 0
+          description: Final investment value
+          example: 15000
+        years:
+          type: number
+          format: float
+          minimum: 0
+          description: Investment period in years
+          example: 5
+
+    InvestmentReturnResponse:
+      type: object
+      properties:
+        roi:
+          type: number
+          format: float
+          description: Return on Investment (percentage)
+          example: 50.0
+        cagr:
+          type: number
+          format: float
+          description: Compound Annual Growth Rate (percentage)
+          example: 8.45
+        total_return:
+          type: number
+          format: float
+          description: Absolute return amount
+          example: 5000
+        calculation_id:
+          type: string
+          format: uuid
+
+    RiskMetricsRequest:
+      type: object
+      required:
+        - returns
+        - risk_free_rate
+      properties:
+        returns:
+          type: array
+          items:
+            type: number
+            format: float
+          minItems: 2
+          description: Array of historical returns (as decimals)
+          example: [0.05, 0.03, -0.02, 0.08, 0.04]
+        risk_free_rate:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Risk-free rate (as decimal)
+          example: 0.02
+
+    RiskMetricsResponse:
+      type: object
+      properties:
+        volatility:
+          type: number
+          format: float
+          description: Annualized volatility (standard deviation)
+          example: 0.0385
+        sharpe_ratio:
+          type: number
+          format: float
+          description: Sharpe ratio (risk-adjusted return)
+          example: 1.04
+        average_return:
+          type: number
+          format: float
+          description: Average return
+          example: 0.036
+        calculation_id:
+          type: string
+          format: uuid
+
+    HistoryResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of calculations in history
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalculationHistory'
+
+    CalculationHistory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        calculation_type:
+          type: string
+          enum: [compound_interest, loan_amortization, investment_return, risk_metrics]
+        input_data:
+          type: object
+          description: Input parameters used for calculation
+        result_data:
+          type: object
+          description: Calculation results
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when calculation was performed
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        details:
+          type: object
+          description: Additional error details

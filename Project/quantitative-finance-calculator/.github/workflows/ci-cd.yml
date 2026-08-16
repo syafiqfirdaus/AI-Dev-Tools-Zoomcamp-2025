@@ -1,0 +1,62 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install UV
+        run: pip install uv
+
+      - name: Copy README
+        run: cp README.md server/
+
+      - name: Install dependencies
+        working-directory: ./server
+        run: uv sync --all-extras
+
+      - name: Run tests
+        working-directory: ./server
+        run: uv run pytest --cov=app tests/ -v
+
+      - name: Run linter
+        working-directory: ./server
+        run: uv run ruff check app/ || true
+
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Run tests
+        working-directory: ./client
+        run: npm test -- --run
+
+      - name: Build
+        working-directory: ./client
+        run: npm run build
