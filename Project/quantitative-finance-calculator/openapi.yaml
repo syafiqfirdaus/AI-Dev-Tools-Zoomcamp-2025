@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: Quantitative Finance Calculator API
-  description: RESTful API for fundamental quantitative finance calculations
-  version: 1.0.0
+  description: REST API for personal finance, derivatives pricing, and market-risk analytics
+  version: 2.0.0
   contact:
     name: API Support
     email: support@example.com
@@ -134,6 +134,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /api/v1/calculate/option-pricing/black-scholes:
+    post:
+      tags: [calculations]
+      summary: Price a European option and calculate Greeks
+      operationId: calculateBlackScholes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlackScholesRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlackScholesResponse'
+
+  /api/v1/calculate/option-pricing/binomial:
+    post:
+      tags: [calculations]
+      summary: Price a European or American option with a CRR tree
+      operationId: calculateBinomialOption
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BinomialOptionRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BinomialOptionResponse'
+
+  /api/v1/calculate/option-pricing/monte-carlo:
+    post:
+      tags: [calculations]
+      summary: Price a European option with seeded Monte Carlo simulation
+      operationId: calculateMonteCarloOption
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonteCarloOptionRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonteCarloOptionResponse'
+
+  /api/v1/calculate/value-at-risk:
+    post:
+      tags: [calculations]
+      summary: Calculate Value at Risk and Expected Shortfall
+      operationId: calculateValueAtRisk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValueAtRiskRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueAtRiskResponse'
+
   /api/v1/history:
     get:
       tags:
@@ -165,7 +241,7 @@ paths:
           required: false
           schema:
             type: string
-            enum: [compound_interest, loan_amortization, investment_return, risk_metrics]
+            enum: [compound_interest, loan_amortization, investment_return, risk_metrics, black_scholes, binomial_option, monte_carlo_option, value_at_risk]
       responses:
         '200':
           description: Successful retrieval
@@ -374,10 +450,16 @@ components:
         risk_free_rate:
           type: number
           format: float
-          minimum: 0
+          minimum: -1
           maximum: 1
-          description: Risk-free rate (as decimal)
+          description: Annual risk-free rate (as decimal; negative values supported)
           example: 0.02
+        periods_per_year:
+          type: integer
+          minimum: 1
+          maximum: 366
+          default: 252
+          description: Number of return observations per year
 
     RiskMetricsResponse:
       type: object
@@ -395,11 +477,134 @@ components:
         average_return:
           type: number
           format: float
-          description: Average return
+          description: Average periodic return
           example: 0.036
+        annualized_return:
+          type: number
+          format: float
+        max_drawdown:
+          type: number
+          format: float
+        periods_per_year:
+          type: integer
+        observations:
+          type: integer
         calculation_id:
           type: string
           format: uuid
+
+    OptionInputs:
+      type: object
+      required: [spot, strike, time_to_maturity, risk_free_rate, volatility, option_type]
+      properties:
+        spot:
+          type: number
+          exclusiveMinimum: 0
+        strike:
+          type: number
+          exclusiveMinimum: 0
+        time_to_maturity:
+          type: number
+          exclusiveMinimum: 0
+          description: Years until expiry
+        risk_free_rate:
+          type: number
+          minimum: -1
+          maximum: 1
+        volatility:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 5
+        option_type:
+          type: string
+          enum: [call, put]
+        dividend_yield:
+          type: number
+          minimum: -1
+          maximum: 1
+          default: 0
+
+    BlackScholesRequest:
+      allOf:
+        - $ref: '#/components/schemas/OptionInputs'
+
+    BlackScholesResponse:
+      type: object
+      required: [model, option_type, price, delta, gamma, vega, theta, rho, calculation_id]
+      properties:
+        model: {type: string, example: black_scholes}
+        option_type: {type: string, enum: [call, put]}
+        price: {type: number}
+        delta: {type: number}
+        gamma: {type: number}
+        vega: {type: number}
+        theta: {type: number}
+        rho: {type: number}
+        calculation_id: {type: string, format: uuid}
+
+    BinomialOptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/OptionInputs'
+        - type: object
+          properties:
+            steps: {type: integer, minimum: 1, maximum: 2000, default: 200}
+            american: {type: boolean, default: false}
+
+    BinomialOptionResponse:
+      type: object
+      required: [model, option_type, price, steps, american, calculation_id]
+      properties:
+        model: {type: string, example: binomial}
+        option_type: {type: string, enum: [call, put]}
+        price: {type: number}
+        steps: {type: integer}
+        american: {type: boolean}
+        calculation_id: {type: string, format: uuid}
+
+    MonteCarloOptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/OptionInputs'
+        - type: object
+          properties:
+            simulations: {type: integer, minimum: 1000, maximum: 1000000, multipleOf: 2, default: 50000}
+            seed: {type: integer, default: 42}
+
+    MonteCarloOptionResponse:
+      type: object
+      required: [model, option_type, price, standard_error, confidence_interval_low, confidence_interval_high, simulations, seed, calculation_id]
+      properties:
+        model: {type: string, example: monte_carlo}
+        option_type: {type: string, enum: [call, put]}
+        price: {type: number}
+        standard_error: {type: number}
+        confidence_interval_low: {type: number}
+        confidence_interval_high: {type: number}
+        simulations: {type: integer}
+        seed: {type: integer}
+        calculation_id: {type: string, format: uuid}
+
+    ValueAtRiskRequest:
+      type: object
+      required: [returns, portfolio_value]
+      properties:
+        returns:
+          type: array
+          minItems: 2
+          items: {type: number}
+        portfolio_value: {type: number, exclusiveMinimum: 0}
+        confidence_level: {type: number, exclusiveMinimum: 0.5, exclusiveMaximum: 1, default: 0.95}
+        method: {type: string, enum: [historical, parametric], default: historical}
+
+    ValueAtRiskResponse:
+      type: object
+      required: [method, confidence_level, value_at_risk, expected_shortfall, observations, calculation_id]
+      properties:
+        method: {type: string, enum: [historical, parametric]}
+        confidence_level: {type: number}
+        value_at_risk: {type: number, description: Positive one-period loss amount}
+        expected_shortfall: {type: number, description: Positive average tail-loss amount}
+        observations: {type: integer}
+        calculation_id: {type: string, format: uuid}
 
     HistoryResponse:
       type: object
@@ -420,7 +625,7 @@ components:
           format: uuid
         calculation_type:
           type: string
-          enum: [compound_interest, loan_amortization, investment_return, risk_metrics]
+          enum: [compound_interest, loan_amortization, investment_return, risk_metrics, black_scholes, binomial_option, monte_carlo_option, value_at_risk]
         input_data:
           type: object
           description: Input parameters used for calculation

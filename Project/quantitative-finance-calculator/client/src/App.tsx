@@ -3,6 +3,8 @@ import CompoundInterestCalculator from './components/CompoundInterestCalculator'
 import LoanAmortizationCalculator from './components/LoanAmortizationCalculator';
 import InvestmentReturnCalculator from './components/InvestmentReturnCalculator';
 import RiskMetricsCalculator from './components/RiskMetricsCalculator';
+import OptionPricingCalculator from './components/OptionPricingCalculator';
+import ValueAtRiskCalculator from './components/ValueAtRiskCalculator';
 import './App.css';
 
 function App() {
@@ -35,6 +37,18 @@ function App() {
                     Investment Return
                 </button>
                 <button
+                    className={activeTab === 'options' ? 'tab-active' : ''}
+                    onClick={() => setActiveTab('options')}
+                >
+                    Option Pricing
+                </button>
+                <button
+                    className={activeTab === 'var' ? 'tab-active' : ''}
+                    onClick={() => setActiveTab('var')}
+                >
+                    VaR &amp; ES
+                </button>
+                <button
                     className={activeTab === 'risk' ? 'tab-active' : ''}
                     onClick={() => setActiveTab('risk')}
                 >
@@ -46,6 +60,8 @@ function App() {
                 {activeTab === 'compound' && <CompoundInterestCalculator />}
                 {activeTab === 'loan' && <LoanAmortizationCalculator />}
                 {activeTab === 'investment' && <InvestmentReturnCalculator />}
+                {activeTab === 'options' && <OptionPricingCalculator />}
+                {activeTab === 'var' && <ValueAtRiskCalculator />}
                 {activeTab === 'risk' && <RiskMetricsCalculator />}
             </main>
 

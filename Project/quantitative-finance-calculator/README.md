@@ -1,25 +1,25 @@
 # Quantitative Finance Calculator
 
-A comprehensive web application for fundamental quantitative finance calculations, designed for finance students, retail investors, and anyone learning quantitative finance concepts.
+A full-stack financial engineering application that connects transparent numerical models to a typed REST API and an interactive React interface. It combines personal-finance calculators with derivatives pricing and market-risk analytics, making it useful both as a learning tool and as a software-engineering portfolio project.
 
 **Live Demo**: (Will be added after deployment)
 
 ---
 
-## 📊 Problem Description
+## 📊 Project Scope
 
-Beginners in quantitative finance often struggle with accessing reliable calculation tools. They typically face:
+Financial formulas are easy to copy and surprisingly easy to implement incorrectly. This project keeps model assumptions visible, validates inputs at the API boundary, persists calculation history, and tests numerical implementations against analytical benchmarks or independent models.
 
-- Complex spreadsheet formulas that are error-prone
-- Multiple scattered online calculators with inconsistent results
-- Lack of understanding of underlying calculation methodologies
-
-**Our Solution**: A unified platform providing accurate, transparent financial calculations with:
+The application currently includes:
 
 - **Compound Interest Calculator** - Future value with various compounding frequencies
 - **Loan Amortization** - Detailed payment schedules for loans
 - **Investment Return Calculator** - ROI and CAGR calculations
 - **Risk Metrics** - Portfolio volatility and Sharpe ratio analysis
+- **Black–Scholes** - European call/put pricing with delta, gamma, vega, theta, and rho
+- **Binomial Trees** - Cox–Ross–Rubinstein pricing for European and American options
+- **Monte Carlo Pricing** - Seeded antithetic simulation with standard error and a 95% confidence interval
+- **Tail Risk** - Historical and parametric Value at Risk (VaR) and Expected Shortfall (CVaR)
 
 ---
 
@@ -33,13 +33,15 @@ Beginners in quantitative finance often struggle with accessing reliable calcula
 
 ## ✨ Features
 
-- 🧮 **Four Comprehensive Calculators** - Cover essential quantitative finance calculations
+- 🧮 **Eight Calculation Workflows** - Personal finance, derivatives, and market risk
 - 📈 **Visual Results** - Interactive charts using Recharts
 - 💾 **Calculation History** - Persist and review past calculations
 - 🎨 **Modern UI** - Clean, responsive design
 - ✅ **Input Validation** - Comprehensive error checking
 - 📱 **Mobile Friendly** - Works on all devices
 - 🔒 **Type-Safe** - Full TypeScript and Pydantic validation
+- 🔁 **Reproducible Simulation** - Explicit random seed and uncertainty interval
+- 🧪 **Cross-Model Validation** - Analytical benchmarks, put–call parity, and numerical convergence tests
 
 ---
 
@@ -230,6 +232,10 @@ The API follows the OpenAPI 3.0 specification defined in [`openapi.yaml`](./open
 - `POST /api/v1/calculate/loan-amortization` - Generate loan payment schedule
 - `POST /api/v1/calculate/investment-return` - Calculate ROI and CAGR
 - `POST /api/v1/calculate/risk-metrics` - Calculate portfolio risk metrics
+- `POST /api/v1/calculate/option-pricing/black-scholes` - Price European options and calculate Greeks
+- `POST /api/v1/calculate/option-pricing/binomial` - Price European or American options with a CRR tree
+- `POST /api/v1/calculate/option-pricing/monte-carlo` - Price European options by seeded simulation
+- `POST /api/v1/calculate/value-at-risk` - Calculate VaR and Expected Shortfall
 - `GET /api/v1/history` - Retrieve calculation history
 
 Interactive API documentation available at: `http://localhost:8000/docs`
@@ -322,14 +328,43 @@ CAGR = (Ending Value / Beginning Value)^(1/years) - 1
 Sharpe = (Portfolio Return - Risk-free Rate) / Portfolio Volatility
 ```
 
+The return frequency is explicit (`periods_per_year`) and is used for both return and volatility annualization. Negative risk-free rates are accepted.
+
+### Black–Scholes
+
+For a dividend-paying European call:
+
+```
+C = S·e^(-qT)·N(d₁) - K·e^(-rT)·N(d₂)
+d₁ = [ln(S/K) + (r-q+σ²/2)T] / (σ√T)
+d₂ = d₁ - σ√T
+```
+
+The API also returns delta, gamma, vega, theta, and rho. Vega and rho represent a 1.00 absolute change in volatility/rate; theta is per year.
+
+### Value at Risk and Expected Shortfall
+
+VaR reports the loss threshold at the selected confidence level. Expected Shortfall reports the average loss beyond that threshold. Both are returned as positive currency loss amounts for a one-period horizon.
+
 ---
 
-## 📊 Testing Coverage
+## 📊 Numerical Validation
 
-- **Backend**: 95%+ test coverage
-- **Frontend**: 90%+ test coverage
-- **Integration Tests**: Full API-to-database workflows
-- **CI/CD**: Automated testing on every push
+The quantitative test suite prioritizes correctness over a headline coverage percentage:
+
+- Black–Scholes call and put prices and Greeks are checked against the standard `S=K=100`, `r=5%`, `σ=20%`, `T=1` analytical benchmark.
+- Put–call parity is verified, including with a negative risk-free rate.
+- A 500-step CRR tree must converge to the Black–Scholes result.
+- An American put must never be worth less than its European equivalent.
+- The seeded Monte Carlo 95% interval must contain the analytical price and reproduce exactly for the same seed.
+- Historical VaR and Expected Shortfall are checked against a hand-calculated return sample.
+- Integration tests verify API validation, calculation persistence, and history retrieval.
+
+Run `uv run pytest` in `server/` and `npm test -- --run` in `client/`.
+
+## 🗺️ Roadmap
+
+The next quantitative modules are portfolio covariance and efficient-frontier optimization, fixed-income duration/convexity, yield-curve interpolation, and volatility-surface visualization. Each new model should include a published analytical benchmark or validation against a trusted library before it is exposed through the API.
 
 ---
 
