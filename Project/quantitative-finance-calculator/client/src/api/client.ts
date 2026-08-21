@@ -61,8 +61,62 @@ class APIClient {
     async calculateRiskMetrics(data: {
         returns: number[];
         risk_free_rate: number;
+        periods_per_year: number;
     }) {
         const response = await this.client.post('/api/v1/calculate/risk-metrics', data);
+        return response.data;
+    }
+
+    async calculateBlackScholes(data: {
+        spot: number;
+        strike: number;
+        time_to_maturity: number;
+        risk_free_rate: number;
+        volatility: number;
+        option_type: 'call' | 'put';
+        dividend_yield: number;
+    }) {
+        const response = await this.client.post('/api/v1/calculate/option-pricing/black-scholes', data);
+        return response.data;
+    }
+
+    async calculateBinomialOption(data: {
+        spot: number;
+        strike: number;
+        time_to_maturity: number;
+        risk_free_rate: number;
+        volatility: number;
+        option_type: 'call' | 'put';
+        dividend_yield: number;
+        steps: number;
+        american: boolean;
+    }) {
+        const response = await this.client.post('/api/v1/calculate/option-pricing/binomial', data);
+        return response.data;
+    }
+
+    async calculateMonteCarloOption(data: {
+        spot: number;
+        strike: number;
+        time_to_maturity: number;
+        risk_free_rate: number;
+        volatility: number;
+        option_type: 'call' | 'put';
+        dividend_yield: number;
+        simulations: number;
+        seed: number;
+    }) {
+        const response = await this.client.post('/api/v1/calculate/option-pricing/monte-carlo', data);
+        return response.data;
+    }
+
+    async calculateValueAtRisk(data: {
+        returns: number[];
+        portfolio_value: number;
+        confidence_level: number;
+        method: 'historical' | 'parametric';
+    }) {
+        const response = await this.client.post('/api/v1/calculate/value-at-risk', data);
         return response.data;
     }
 

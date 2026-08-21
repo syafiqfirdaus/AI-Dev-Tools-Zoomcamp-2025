@@ -7,6 +7,7 @@ import {
 const RiskMetricsCalculator: React.FC = () => {
     const [rawReturns, setRawReturns] = useState("0.05, 0.02, -0.01, 0.04, 0.03, -0.02, 0.06, 0.01, 0.03, 0.04");
     const [riskFreeRate, setRiskFreeRate] = useState(0.02);
+    const [periodsPerYear, setPeriodsPerYear] = useState(252);
     const [result, setResult] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -26,7 +27,8 @@ const RiskMetricsCalculator: React.FC = () => {
 
             const data = await apiClient.calculateRiskMetrics({
                 returns: returnsArray,
-                risk_free_rate: riskFreeRate
+                risk_free_rate: riskFreeRate,
+                periods_per_year: periodsPerYear
             });
             setResult(data);
         } catch (err: any) {
@@ -59,7 +61,7 @@ const RiskMetricsCalculator: React.FC = () => {
                         className="text-input"
                         required
                     />
-                    <small>Enter a series of periodic returns (e.g. monthly or yearly)</small>
+                    <small>The selected frequency is used to annualize return and volatility.</small>
                 </div>
 
                 <div className="form-group">
@@ -70,8 +72,25 @@ const RiskMetricsCalculator: React.FC = () => {
                         value={riskFreeRate}
                         onChange={(e) => setRiskFreeRate(parseFloat(e.target.value))}
                         step="0.001"
+                        min="-100"
+                        max="100"
                         required
                     />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="periods_per_year">Return Frequency</label>
+                    <select
+                        id="periods_per_year"
+                        value={periodsPerYear}
+                        onChange={(e) => setPeriodsPerYear(parseInt(e.target.value))}
+                    >
+                        <option value="252">Daily (252/year)</option>
+                        <option value="52">Weekly (52/year)</option>
+                        <option value="12">Monthly (12/year)</option>
+                        <option value="4">Quarterly (4/year)</option>
+                        <option value="1">Annual (1/year)</option>
+                    </select>
                 </div>
 
                 <button type="submit" className="calculate-btn" disabled={loading}>
@@ -100,6 +119,10 @@ const RiskMetricsCalculator: React.FC = () => {
                         <div className="result-card">
                             <div className="result-label">Max Drawdown</div>
                             <div className="result-value red">{(result.max_drawdown * 100).toFixed(2)}%</div>
+                        </div>
+                        <div className="result-card">
+                            <div className="result-label">Annualized Return</div>
+                            <div className="result-value">{(result.annualized_return * 100).toFixed(2)}%</div>
                         </div>
                     </div>
 
